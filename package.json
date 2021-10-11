@@ -1,13 +1,12 @@
 {
   "name": "firestore_goose",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "lint": "eslint",
     "start": "nodemon"
   },
-  "dependencies": {},
   "devDependencies": {
     "eslint": "^8.0.0",
     "nodemon": "^2.0.7",
