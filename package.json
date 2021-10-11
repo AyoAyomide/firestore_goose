@@ -1,5 +1,5 @@
 {
-  "name": "firegoose",
+  "name": "firestore_goose",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",

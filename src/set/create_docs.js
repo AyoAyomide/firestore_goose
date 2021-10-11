@@ -1,7 +1,7 @@
 const ErrorHook = require('../errors/errorHook');
 const getHeight = require('../helpers/@getHeight');
 
-class SetDocs {
+class CreateNewDocs {
     constructor(admin, { collPath, docPath }) {
         this.docPath = docPath;
         this.collPath = collPath;
@@ -43,4 +43,4 @@ class SetDocs {
         }
     }
 }
-module.exports = SetDocs;
+module.exports = CreateNewDocs;
