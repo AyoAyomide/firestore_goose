@@ -1,6 +1,6 @@
 const ErrorHook = require('../errors/errorHook');
-const getHeight = require('../helpers/@getHeight');
-
+const getHeightKey = require('../helpers/@getHeightKey');
+const validateSave = require('../set/utils/validate_save');
 class CreateNewDocs {
     constructor(admin, { collPath, docPath }) {
         this.docPath = docPath;
@@ -15,7 +15,7 @@ class CreateNewDocs {
             docToArray.pop();
             path = docToArray.toString();
         }
-        this.height = await getHeight(this.firestore(), path);
+        this.height = await getHeightKey(this.firestore(), path);
         if (this.height) throw "document already exist";
     }
     getDocPath(path) {
@@ -24,18 +24,13 @@ class CreateNewDocs {
     getCollToDocPath(path) {
         if (path) return this.firestore().collection(path).doc();
     }
-    async validateSave(dbPath, fieldKey) {
-        let doc = await dbPath.get(fieldKey);
-        if (!doc.exists) throw 'new saved document not found';
-        return doc.data();
-    }
     async save(key, value) {
         try {
             await this.doesNotExist({ collPath: this.collPath, docPath: this.docPath });
             let dbPath = this.collPath ? await this.getCollToDocPath(this.collPath) : this.getDocPath(this.docPath);
             let genesisData = { height: 1, [key]: value };
             await dbPath.set(genesisData);
-            let saved = await this.validateSave(dbPath, key);
+            let saved = await validateSave(dbPath, key);
             return saved;
         }
         catch (error) {
