@@ -1,5 +1,6 @@
 /logs
 /npm-debug.log
 /node_modules
+/src/init
 .DS_Store
 .env
