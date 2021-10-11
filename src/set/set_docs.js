@@ -1,10 +1,11 @@
-const admin = require('firebase-admin');
-const db = admin.firestore();
+const ErrorHook = require('../errors/errorHook');
 const getHeight = require('../helpers/@getHeight');
+
 class SetDocs {
-    constructor({ collPath, docPath }) {
+    constructor(admin, { collPath, docPath }) {
         this.docPath = docPath;
         this.collPath = collPath;
+        this.firestore = () => admin.firestore();
     }
     async doesNotExist({ collPath, docPath }) {
         let path;
@@ -14,14 +15,19 @@ class SetDocs {
             docToArray.pop();
             path = docToArray.toString();
         }
-        this.height = await getHeight(path);
+        this.height = await getHeight(this.firestore(), path);
         if (this.height) throw "document already exist";
     }
     getDocPath(path) {
-        if (path) return db.doc(path);
+        if (path) return this.firestore().doc(path);
     }
     getCollToDocPath(path) {
-        if (path) return db.collection(path).doc();
+        if (path) return this.firestore().collection(path).doc();
+    }
+    async validateSave(dbPath, fieldKey) {
+        let doc = await dbPath.get(fieldKey);
+        if (!doc.exists) throw 'new saved document not found';
+        return doc.data();
     }
     async save(key, value) {
         try {
@@ -29,9 +35,11 @@ class SetDocs {
             let dbPath = this.collPath ? await this.getCollToDocPath(this.collPath) : this.getDocPath(this.docPath);
             let genesisData = { height: 1, [key]: value };
             await dbPath.set(genesisData);
+            let saved = await this.validateSave(dbPath, key);
+            return saved;
         }
         catch (error) {
-            console.log(error);
+            ErrorHook({ error, message: "unable to save new document", functionName: "SetDocs.save" })
         }
     }
 }
