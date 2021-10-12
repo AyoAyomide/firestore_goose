@@ -2,5 +2,6 @@
 /npm-debug.log
 /node_modules
 /src/init
+/src/devstools
 .DS_Store
 .env
