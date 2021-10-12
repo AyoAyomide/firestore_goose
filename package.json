@@ -7,7 +7,6 @@
     "lint": "eslint",
     "start": "nodemon"
   },
-  "dependencies": {},
   "devDependencies": {
     "eslint": "^8.0.0",
     "generate-password": "^1.6.1",
