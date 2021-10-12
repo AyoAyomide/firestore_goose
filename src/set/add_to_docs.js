@@ -1,31 +1,40 @@
 const ErrorHook = require('../errors/errorHook');
-const getHeight = require('../helpers/@getHeight');
-const validateSave = require('../set/utils/validate_save');
-class AddToDocs {
-    constructor(admin, { docPath }) {
-        this.docPath = docPath;
+const metaData = require('../helpers/@getCollMeta');
+const validateSave = require('./utils/validate_save');
+class AddToDoc {
+    constructor(admin, { collPath }) {
+        this.collPath = collPath;
+        this.limit = 5;
         this.firestore = () => admin.firestore();
     }
-    getDocPath(path) {
-        if (path) return this.firestore().doc(path);
+    async getMetaData() {
+        let id = await metaData(this.firestore(), this.collPath, this.limit);
+        if (!id) id = { keys: [], length: 0, limitExceed: true };
+        return id;
     }
-    async doesNotExist(dbPath, key) {
-        let height = await getHeight(dbPath);
-        if (height.fieldKeys.includes(key)) throw 'key already exist';
+    doesNotExist(fieldKeys, key) {
+        if (fieldKeys.includes(key)) throw 'key already exist';
     }
-    async updateHeight(dbPath) {
-        let length = await getHeight(dbPath);
-        let height = length.length;
-        console.log(height);
-        return await dbPath.set({ height }, { merge: true });
+    exceedLimit(length) {
+        return length > this.limit ? true : false;
     }
-    async save(key, value) {
+    fieldPath(limitExceed, id = false) {
+        return !limitExceed ? this.firestore().doc(`${this.collPath}/${id}`) : this.firestore().collection(this.collPath).doc();
+    }
+    fieldValue({ limitExceed, fieldID, fieldData, height }) {
+        let increaseHeight = height + 1;
+        return !limitExceed ? { height: increaseHeight, [fieldID]: fieldData } : { height: 1, [fieldID]: fieldData };
+    }
+    async save(fieldID, fieldData) {
         try {
-            let dbPath = this.getDocPath(this.docPath);
-            await this.doesNotExist(dbPath, key);
-            await dbPath.set({ [key]: value }, { merge: true });
-            let saved = await validateSave(dbPath, key);
-            await this.updateHeight(dbPath);
+            let meta, limit, dbPath, data, saved;
+            meta = await this.getMetaData();
+            this.doesNotExist(meta.keys, fieldID);
+            limit = this.exceedLimit(meta.length);
+            dbPath = this.fieldPath(meta.limitExceed, meta.id);
+            data = this.fieldValue({ limit, fieldID, fieldData, height: meta.length });
+            await dbPath.set(data, { merge: true });
+            saved = await validateSave(dbPath, fieldID);
             return saved;
         }
         catch (error) {
@@ -33,5 +42,4 @@ class AddToDocs {
         }
     }
 }
-
-module.exports = AddToDocs;
+module.exports = AddToDoc;
