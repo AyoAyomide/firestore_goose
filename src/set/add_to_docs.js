@@ -25,6 +25,12 @@ class AddToDoc {
         let increaseHeight = height + 1;
         return !limitExceed ? { height: increaseHeight, [fieldID]: fieldData } : { height: 1, [fieldID]: fieldData };
     }
+    async addDocToLocation(docID, fieldID) {
+        let data = { [fieldID]: docID };
+        let dbPath = this.firestore().doc(`${this.collPath}/location`);
+        console.log(data);
+        await dbPath.set(data, { merge: true });
+    }
     async save(fieldID, fieldData) {
         try {
             let meta, limit, dbPath, data, saved;
@@ -35,6 +41,7 @@ class AddToDoc {
             data = this.fieldValue({ limit, fieldID, fieldData, height: meta.length });
             await dbPath.set(data, { merge: true });
             saved = await validateSave(dbPath, fieldID);
+            await this.addDocToLocation(saved.id, fieldID);
             return saved;
         }
         catch (error) {
