@@ -3,7 +3,8 @@ const random = require('./src/devstools/random');
 const looper = require('./src/devstools/loop');
 
 const addToDocs = require('./src/set/add_to_docs.js');
-const getDocsByID = require('./src/get/get_docs');
+const getDocsByID = require('./src/get/get_docs_by_id');
+const getAllDocs = require('./src/get/get_all_docs');
 class FireBox {
     constructor(admin) {
         this.admin = admin;
@@ -13,6 +14,9 @@ class FireBox {
     }
     getByID({ path, key }) {
         return new getDocsByID(this.admin, path).get(key);
+    }
+    getAll({ path }) {
+        return new getAllDocs(this.admin, path).get();
     }
 }
 let path = { collPath: 'user' };
@@ -30,7 +34,8 @@ let value = random();
 //     test.add({ path, key, value })
 // });
 
-test.getByID({ path, key: 'aq8ZN' })
+// test.getByID({ path, key: 'aq8ZN' })
+//     .then(data => { console.log(data) })
+test.getAll({ path })
     .then(data => { console.log(data) })
-
 // module.exports = FireBox;
