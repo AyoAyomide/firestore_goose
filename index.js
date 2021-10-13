@@ -9,8 +9,8 @@ class FireBox {
     add({ path, key, value }) {
         return new addToDocs(this.admin, path).save(key, value);
     }
-    updateByID({ path, key, value }) {
-        return new updateDocs(this.admin, path).save(key, value);
+    updateByID({ path, key, childObject, childArrayAdd, childArrayRemove, value }) {
+        return new updateDocs(this.admin, path).save({ key, childObject, childArrayAdd, childArrayRemove, value });
     }
     getByID({ path, key }) {
         return new getDocsByID(this.admin, path).get(key);
