@@ -1,4 +1,5 @@
 const addToDocs = require('./src/set/add_to_docs.js');
+const updateDocs = require('./src/set/update_by_id');
 const getDocsByID = require('./src/get/get_docs_by_id');
 const getAllDocs = require('./src/get/get_all_docs');
 class FireBox {
@@ -7,6 +8,9 @@ class FireBox {
     }
     add({ path, key, value }) {
         return new addToDocs(this.admin, path).save(key, value);
+    }
+    updateByID({ path, key, value }) {
+        return new updateDocs(this.admin, path).save(key, value);
     }
     getByID({ path, key }) {
         return new getDocsByID(this.admin, path).get(key);
