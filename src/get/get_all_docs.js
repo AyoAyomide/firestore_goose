@@ -8,7 +8,7 @@ class GetAllDocs {
         query = this.firestore().collection(this.collPath);
         docs = await query.get();
         docs.forEach((docs) => {
-            if (docs.id != 'location') { result = { ...docs.data() }; }
+            if (docs.id != 'location') { result = { ...result, ...docs.data() }; }
         })
         delete result.height;
         return result;
