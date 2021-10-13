@@ -13,8 +13,8 @@ class FireBox {
     add({ path, key, value }) {
         return new addToDocs(this.admin, path).save(key, value);
     }
-    updateByID({ path, key, value }) {
-        return new updateDocs(this.admin, path).save(key, value);
+    updateByID({ path, key, childObject, childArrayAdd, childArrayRemove, value }) {
+        return new updateDocs(this.admin, path).save({ key, childObject, childArrayAdd, childArrayRemove, value });
     }
     getByID({ path, key }) {
         return new getDocsByID(this.admin, path).get(key);
@@ -40,7 +40,9 @@ let value = random();
 // test.getByID({ path, key: 'aq8ZN' })
 //     .then(data => { console.log(data) })
 // test.getAll({ path })
-//     .then(data => { console.log(data) })
-// test.updateByID({ path, key: 'NR9eA', value: "saks" })
-//     .then(data => { console.log(data) })
+    //     .then(data => { console.log(data) })
+    // test.updateByID({ path, key: 'NR9eA', childObject: 'age', value: "saks" })
+    // test.updateByID({ path, key: 'NR9eA', childArrayAdd: 'wifes', value: "sa2k" })
+    // test.updateByID({ path, key: 'NR9eA', childArrayRemove: 'wifes', value: "sakpokl" })
+    // .then(data => { console.log(data) })
 // module.exports = FireBox;
