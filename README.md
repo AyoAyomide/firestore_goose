@@ -40,38 +40,220 @@ const fireSG = new FirestoreGoose(firebaseAdmin);
 
 **firebaseAdmin** : The initialize firebase admin instance
 
-## Step 1 - Adding data
+## Example 1 - Adding data
 
 ```js
-let collectionPath = "user";
-let fieldKey = "mykey";
-let fieldValue = "myvalue"; // string | object| array
+let userCollection = "user";
+let userID = "John";
+let userDetails = {
+  lastName: "Doe",
+  age: 20,
+  kidsNames: ["Jam", "Mike"],
+  weeklyCars: { monday: "ferrari", tuesday: "benz" },
+};
 
-let query = { path: collectionPath, key: fieldKey, value: fieldValue };
-
+let query = {
+  path: userCollection, //firestore collection
+  key: userID, // firestore fieldKey
+  value: userDetails, // firestore fieldValue
+};
 fireSG.add(query).then((response) => {
   console.log(response);
 });
+// save another data
+let query2 = { path: userCollection, key: "Jane", value: "Doe" };
+fireSG.add(query2).then((response) => {
+  console.log(response);
+});
+
+/*
+--response--
+{
+  id: '5t7AyoVQOgOhXap63wtW',
+  data: {
+    John: {
+      kidsNames: [Array],
+      lastName: 'Doe',
+      weeklyCars: [Object],
+      age: '20'
+    },
+  }
+}
+*/
 ```
 
-**response** : All data in the collection
+- **id** : The document id
+- **data** : The document data
 
-## Step 2a - Updating data
+---
 
-**Note**: Only existing fieldKey can be updated.
+## Example 2 - Updating data
+
+**Note:** Only existing document can be updated
 
 ```js
-fieldValue = { newValue: "myvalue" }; // string | object| array
+let detailsToUpdate = "age";
+let updatedAge = 35;
+query = {
+  path: userCollection, //firestore collection
+  key: userID, // firestore fieldKey
+  childObject: detailsToUpdate, // firestore nested field Key
+  value: updatedAge, // firestore nested field value
+};
+fireSG.updateByID(query);
+});
+/*
+--response--
+John.age updated successfully
 
-query = { path: collectionPath, key: fieldKey, value: fieldValue };
-
-fireSG.updateByID(query).then((response) => {});
+--output--
+John.age = 35
+*/
 ```
 
-**response** : \*successfully updated **key\***
+- **childObject** : The nested field object key we want to update
 
-## Step 2b - Updating nested object
+---
+
+## Example 3 - Update : add to nested object
 
 ```js
+detailsToUpdate = "weeklyCars.wednesday";
+let updatedCar = "bmw";
+query = {
+  path: userCollection, //firestore collection
+  key: userID, // firestore fieldKey
+  childObject: detailsToUpdate, // firestore nested field Key
+  value: updatedCar, // firestore nested field value
+};
+fireSG.updateByID(query);
+/*
+--response--
+John.weeklyCars.wednesday updated successfully
+--output--
+John.weeklyCars = { monday: 'ferrari', tuesday: 'benz', wednesday: 'bmw' }
+*/
+```
 
+---
+
+## Example 4 - Update : add new value to array
+
+```js
+detailsToUpdate = "kidsNames";
+let childToAdd = "Jerry";
+query = {
+  path: userCollection, //firestore collection
+  key: userID, // firestore fieldKey
+  childArrayAdd: detailsToUpdate, // firestore nested field array Key
+  value: childToAdd, // firestore nested field array value
+};
+fireSG.updateByID(query);
+});
+/*
+--response--
+John.kidsNames updated successfully
+
+--output--
+John.kidsNames = ['Jam', 'Mike', 'Jerry']
+*/
+```
+
+---
+
+## Example 5 - Update : remove value from array
+
+```js
+detailsToUpdate = "kidsNames";
+let childToRemove = "Mike";
+query = {
+  path: userCollection, //firestore collection
+  key: userID, // firestore fieldKey
+  childArrayRemove: detailsToUpdate, // firestore nested field array Key
+  value: childToRemove, // firestore nested field array value
+};
+ireSG.updateByID(query);
+/*
+--response--
+John.kidsNames updated successfully
+
+--output--
+John.kidsNames = ['Jam', 'Jerry']
+*/
+```
+
+---
+
+## Example 6 - Get : field by id
+
+```js
+query = {
+  path: userCollection, //firestore collection
+  key: userID, // firestore fieldKey
+};
+fireSG.getByID(query);
+/*
+--response--
+{
+  lastName: 'Doe',
+  weeklyCars: { tuesday: 'benz', monday: 'ferrari' },
+  age: 35,
+  kidsNames: [ 'Jam', 'Jerry' ]
+}
+*/
+```
+
+- **response** : it returns only one field data
+
+---
+
+## Example 7 - Get : all field in a collection
+
+```js
+query = {
+  path: userCollection, //firestore collection
+};
+fireSG.getAll(query);
+/*
+--response--
+{
+  
+  John: {...},
+  Jane: ...
+}
+*/
+```
+
+## Example 8 - Delete : field by id
+
+```js
+userID = "Jane";
+query = {
+  path: userCollection, //firestore collection
+  key: userID, // firestore fieldKey
+};
+fireSG.delete(query);
+/*
+--response--
+Jane deleted successfully
+*/
+```
+
+## Example 9 - Delete : a value in a nested field
+
+```js
+userID = "John";
+detailsToUpdate = "weeklyCars.tuesday";
+query = {
+  path: userCollection, //firestore collection
+  key: userID, // firestore fieldKey
+  childObject: detailsToUpdate, // firestore nested field Key
+};
+fireSG.delete(query);
+/*
+--response--
+John.weeklyCars.tuesday deleted successfully
+--output--
+John.weekly = { monday: 'ferrari' }
+*/
 ```
