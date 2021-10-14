@@ -17,6 +17,7 @@ class DeleteFieldByID {
         let location, locData, dbPath, response;
         location = this.docPath('location');
         try {
+            if (key == 'height') throw 'height cannot be deleted';
             await this.firestore().runTransaction(async transaction => {
                 locData = await transaction.get(location);
                 locData = locData.data()[key]
