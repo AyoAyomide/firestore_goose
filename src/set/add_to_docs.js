@@ -28,7 +28,6 @@ class AddToDoc {
     async addDocToLocation(docID, fieldID) {
         let data = { [fieldID]: docID };
         let dbPath = this.firestore().doc(`${this.collPath}/location`);
-        console.log(data);
         await dbPath.set(data, { merge: true });
     }
     async save(fieldID, fieldData) {

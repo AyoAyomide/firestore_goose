@@ -4,6 +4,7 @@ const looper = require('./src/devstools/loop');
 
 const addToDocs = require('./src/set/add_to_docs.js');
 const updateDocs = require('./src/set/update_by_id');
+const deleteDocs = require('./src/set/delete_by_id');
 const getDocsByID = require('./src/get/get_docs_by_id');
 const getAllDocs = require('./src/get/get_all_docs');
 class FireBox {
@@ -15,6 +16,9 @@ class FireBox {
     }
     updateByID({ path, key, childObject, childArrayAdd, childArrayRemove, value }) {
         return new updateDocs(this.admin, path).save({ key, childObject, childArrayAdd, childArrayRemove, value });
+    }
+    delete({ path, key, childObject }) {
+        return new deleteDocs(this.admin, path).save(key, childObject);
     }
     getByID({ path, key }) {
         return new getDocsByID(this.admin, path).get(key);
@@ -28,8 +32,6 @@ let test = new FireBox(init_firebase());
 
 let key = random();
 let value = random();
-// test.add({ path, key, value })
-//     .then(data => { console.log(data) })
 
 // looper(3, () => {
 //     let key = random();
@@ -37,12 +39,15 @@ let value = random();
 //     test.add({ path, key, value })
 // });
 
+// test.add({ path, key: 'aq8ZN', value })
 // test.getByID({ path, key: 'aq8ZN' })
-//     .then(data => { console.log(data) })
 // test.getAll({ path })
-    //     .then(data => { console.log(data) })
-    // test.updateByID({ path, key: 'NR9eA', childObject: 'age', value: "saks" })
-    // test.updateByID({ path, key: 'NR9eA', childArrayAdd: 'wifes', value: "sa2k" })
-    // test.updateByID({ path, key: 'NR9eA', childArrayRemove: 'wifes', value: "sakpokl" })
+// test.updateByID({ path, key: 'aq8ZN', childObject: 'age', value: "saks" })
+// test.updateByID({ path, key: 'NR9eA', childArrayAdd: 'wifes', value: "sa2k" })
+// test.updateByID({ path, key: 'NR9eA', childArrayRemove: 'wifes', value: "sakpokl" })
+// test.delete({ path, key: 'aq8ZN' })
+    // test.delete({ path, key: 'aq8ZN', childObject: 'age' })
     // .then(data => { console.log(data) })
+    // .catch(data => { console.log(data) })
+
 // module.exports = FireBox;

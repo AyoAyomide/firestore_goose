@@ -25,9 +25,10 @@ class UpdateFieldByID {
         location = this.docPath('location');
         try {
             if (key == 'height') throw 'height cannot be updated';
-            this.firestore().runTransaction(async transaction => {
+            await this.firestore().runTransaction(async transaction => {
                 locData = await transaction.get(location);
-                locData = locData.data()[key]
+                locData = locData.data()[key];
+                if (!locData) throw 'invalid field key';
                 dbPath = this.docPath(locData);
                 await transaction.update(dbPath, this.saveData({ key, childObject, childArrayAdd, childArrayRemove, value }));
             });
