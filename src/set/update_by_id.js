@@ -1,14 +1,14 @@
 const ErrorHook = require('../errors/errorHook');
 class UpdateFieldByID {
-    constructor(admin, { collPath }) {
-        this.collPath = collPath;
+    constructor(admin, path) {
+        this.collectionPath = path;
         this.admin = admin;
         this.firestore = () => admin.firestore();
     }
     docPath(docID) {
-        return this.firestore().doc(`${this.collPath}/${docID}`);
+        return this.firestore().doc(`${this.collectionPath}/${docID}`);
     }
-    saveData({ key, childObject, childArrayAdd, childArrayRemove, value }) {
+    executeData({ key, childObject, childArrayAdd, childArrayRemove, value }) {
         if (childObject) key = `${key}.${childObject}`;
         if (childArrayAdd) {
             key = `${key}.${childArrayAdd}`;
@@ -20,7 +20,7 @@ class UpdateFieldByID {
         }
         return { [key]: value }
     }
-    async save({ key, childObject, childArrayAdd, childArrayRemove, value }) {
+    async execute({ key, childObject, childArrayAdd, childArrayRemove, value }) {
         let location, locData, dbPath;
         location = this.docPath('location');
         try {
@@ -30,7 +30,7 @@ class UpdateFieldByID {
                 locData = locData.data()[key];
                 if (!locData) throw 'invalid field key';
                 dbPath = this.docPath(locData);
-                await transaction.update(dbPath, this.saveData({ key, childObject, childArrayAdd, childArrayRemove, value }));
+                await transaction.update(dbPath, this.executeData({ key, childObject, childArrayAdd, childArrayRemove, value }));
             });
             return `successfully updated ${key}`;
         }
