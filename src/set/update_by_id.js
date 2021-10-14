@@ -33,7 +33,7 @@ class UpdateFieldByID {
                 await transaction.update(dbPath, this.executeData({ key, childObject, childArrayAdd, childArrayRemove, value }));
             });
             response = childObject ? `${key}.${childObject}` : key;
-            return `${response} deleted successfully`;
+            return `${response} updated successfully`;
         }
         catch (error) {
             ErrorHook({ error, message: "unable to update document", functionName: "UpdateFieldByID.save" })
