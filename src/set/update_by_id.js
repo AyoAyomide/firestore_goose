@@ -21,7 +21,7 @@ class UpdateFieldByID {
         return { [key]: value }
     }
     async execute({ key, childObject, childArrayAdd, childArrayRemove, value }) {
-        let location, locData, dbPath;
+        let location, locData, dbPath, response;
         location = this.docPath('location');
         try {
             if (key == 'height') throw 'height cannot be updated';
@@ -32,7 +32,8 @@ class UpdateFieldByID {
                 dbPath = this.docPath(locData);
                 await transaction.update(dbPath, this.executeData({ key, childObject, childArrayAdd, childArrayRemove, value }));
             });
-            return `successfully updated ${key}`;
+            response = childObject ? `${key}.${childObject}` : key;
+            return `${response} deleted successfully`;
         }
         catch (error) {
             ErrorHook({ error, message: "unable to update document", functionName: "UpdateFieldByID.save" })
