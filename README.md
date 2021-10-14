@@ -29,20 +29,49 @@ npm i firestore_goose
 ### Node.js
 
 ```js
-let FirestoreGoose = require("firestore_goose");
+const FirestoreGoose = require("firestore_goose");
 ```
 
 ### Basic Usage
 
 ```js
-let fireSG = new FirestoreGoose(firebaseAdmin);
+const fireSG = new FirestoreGoose(firebaseAdmin);
 ```
 
 **firebaseAdmin** : The initialize firebase admin instance
 
-#### Example 1 - Adding data
+## Step 1 - Adding data
 
 ```js
-let path = { collPath: "user/jame/transaction" };
-let fireSG = new FirestoreGoose(firebaseAdmin);
+let collectionPath = "user";
+let fieldKey = "mykey";
+let fieldValue = "myvalue"; // string | object| array
+
+let query = { path: collectionPath, key: fieldKey, value: fieldValue };
+
+fireSG.add(query).then((response) => {
+  console.log(response);
+});
+```
+
+**response** : All data in the collection
+
+## Step 2a - Updating data
+
+**Note**: Only existing fieldKey can be updated.
+
+```js
+fieldValue = { newValue: "myvalue" }; // string | object| array
+
+query = { path: collectionPath, key: fieldKey, value: fieldValue };
+
+fireSG.updateByID(query).then((response) => {});
+```
+
+**response** : \*successfully updated **key\***
+
+## Step 2b - Updating nested object
+
+```js
+
 ```
