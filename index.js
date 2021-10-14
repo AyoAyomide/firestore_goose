@@ -1,5 +1,6 @@
 const addToDocs = require('./src/set/add_to_docs.js');
 const updateDocs = require('./src/set/update_by_id');
+const deleteDocs = require('./src/set/delete_by_id');
 const getDocsByID = require('./src/get/get_docs_by_id');
 const getAllDocs = require('./src/get/get_all_docs');
 class FireBox {
@@ -11,6 +12,9 @@ class FireBox {
     }
     updateByID({ path, key, childObject, childArrayAdd, childArrayRemove, value }) {
         return new updateDocs(this.admin, path).save({ key, childObject, childArrayAdd, childArrayRemove, value });
+    }
+    delete({ path, key, childObject }) {
+        return new deleteDocs(this.admin, path).save(key, childObject);
     }
     getByID({ path, key }) {
         return new getDocsByID(this.admin, path).get(key);
