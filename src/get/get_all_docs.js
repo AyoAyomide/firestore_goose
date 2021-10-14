@@ -1,11 +1,11 @@
 class GetAllDocs {
-    constructor(admin, { collPath }) {
-        this.collPath = collPath;
+    constructor(admin, path) {
+        this.collectionPath = path;
         this.firestore = () => admin.firestore();
     }
-    async get() {
+    async execute() {
         let result, query, docs;
-        query = this.firestore().collection(this.collPath);
+        query = this.firestore().collection(this.collectionPath);
         docs = await query.get();
         docs.forEach((docs) => {
             if (docs.id != 'location') { result = { ...result, ...docs.data() }; }
