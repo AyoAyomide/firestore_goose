@@ -39,15 +39,15 @@ let value = random();
 //     test.add({ path, key, value })
 // });
 
-// test.add({ path, key: 'aq8ZN', value })
+// test.add({ path, key: 'sam', value })
 // test.getByID({ path, key: 'aq8ZN' })
 // test.getAll({ path })
-// test.updateByID({ path, key: 'aq8ZN', childObject: 'age', value: "saks" })
+// test.updateByID({ path, key: 'sam', childObject: 'wifes.jan5', value })
 // test.updateByID({ path, key: 'NR9eA', childArrayAdd: 'wifes', value: "sa2k" })
 // test.updateByID({ path, key: 'NR9eA', childArrayRemove: 'wifes', value: "sakpokl" })
 // test.delete({ path, key: 'aq8ZN' })
-    // test.delete({ path, key: 'aq8ZN', childObject: 'age' })
-    // .then(data => { console.log(data) })
-    // .catch(data => { console.log(data) })
+test.delete({ path, key: 'height', childObject: 'wifess' })
+    .then(data => { console.log(data) })
+    .catch(data => { console.log(data) })
 
 // module.exports = FireBox;
