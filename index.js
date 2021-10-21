@@ -28,8 +28,8 @@ class FirestoreGoose {
     getAll({ path }) {
         return new getAllDocs(this.admin, path).execute();
     }
-    getLast({ path, key }) {
-        return new getLast(this.admin, path).execute(key);
+    getLast({ path }) {
+        return new getLast(this.admin, path).execute();
     }
 }
 
