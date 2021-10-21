@@ -1,12 +1,14 @@
 const init_firebase = require('./src/init/_init.js');
 const random = require('./src/devstools/random');
-const looper = require('./src/devstools/loop');
+const bytesToSize = require('./src/devstools/byteToSize');
+// const looper = require('./src/devstools/loop');
 
 const addToDocs = require('./src/set/add_to_docs.js');
 const updateDocs = require('./src/set/update_by_id');
 const deleteDocs = require('./src/set/delete_by_id');
 const getDocsByID = require('./src/get/get_docs_by_id');
 const getAllDocs = require('./src/get/get_all_docs');
+const getLast = require('./src/get/get_last');
 class FirestoreGoose {
     constructor(admin) {
         this.admin = admin;
@@ -26,6 +28,9 @@ class FirestoreGoose {
     getAll({ path }) {
         return new getAllDocs(this.admin, path).execute();
     }
+    getLast({ path, key }) {
+        return new getLast(this.admin, path).execute(key);
+    }
 }
 
 let test = new FirestoreGoose(init_firebase());
@@ -39,10 +44,16 @@ let value = random();
 //     let value = random();
 //     test.add({ path, key, value })
 // });
-
-// test.add({ path, key: 'samsf', value })
-// test.getByID({ path, key: 'sam' })
-// test.getAll({ path })
+let data = {
+    "ySujRpRyfm6hE2oofX5e": ['5EogN', '5EogN', '5EogN', '5EogN', '5EogN'],
+    "ySujRpRyfm6hE2oofX5p": ['5EogN', '5EogN', '5EogN', '5EogN', '5EogN']
+}
+let sample = Buffer.byteLength(JSON.stringify(data));
+// console.log(bytesToSize(sample));
+// test.add({ path, key, value })
+// test.getLast({ path, key: 'BoX3q' })
+    // test.getByID({ path, key: 'B4bsd' })
+    // test.getAll({ path })
     // test.updateByID({ path, key: 'sam', childObject: 'wifes.jan5', value })
     // test.updateByID({ path, key: 'NR9eA', childArrayAdd: 'wifes', value: "sa2k" })
     // test.updateByID({ path, key: 'NR9eA', childArrayRemove: 'wifes', value: "sakpokl" })
@@ -52,3 +63,10 @@ let value = random();
     // .catch(data => { console.log(data) })
 
 // module.exports = FireBox;
+
+// docs.forEach((docs) => {
+//     if (docs.id != 'location') { result = docs.id; }
+// })
+// if (!result) throw 'key not found in location Document';
+// console.log(result);
+// return result;
