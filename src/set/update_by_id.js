@@ -1,4 +1,5 @@
 const ErrorHook = require('../errors/errorHook');
+const fieldLocation = require('../helpers/@fieldLocation');
 class UpdateFieldByID {
     constructor(admin, path) {
         this.collectionPath = path;
@@ -21,15 +22,12 @@ class UpdateFieldByID {
         return { [key]: value }
     }
     async execute({ key, childObject, childArrayAdd, childArrayRemove, value }) {
-        let location, locData, dbPath, response;
-        location = this.docPath('location');
+        let location, dbPath, response;
         try {
             if (key == 'height') throw 'height cannot be updated';
+            location = await fieldLocation(this.firestore(), this.collectionPath, key);
             await this.firestore().runTransaction(async transaction => {
-                locData = await transaction.get(location);
-                locData = locData.data()[key];
-                if (!locData) throw 'invalid field key';
-                dbPath = this.docPath(locData);
+                dbPath = this.docPath(location);
                 await transaction.update(dbPath, this.executeData({ key, childObject, childArrayAdd, childArrayRemove, value }));
             });
             response = childObject ? `${key}.${childObject}` : key;

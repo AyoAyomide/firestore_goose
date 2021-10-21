@@ -2,7 +2,7 @@ const ErrorHook = require('../errors/errorHook');
 const metaData = require('../helpers/@getCollMeta');
 const validateSave = require('./utils/validate_save');
 class AddToDoc {
-    constructor(admin, path, limit = 5) {
+    constructor(admin, path, limit = 10) {
         this.collectionPath = path;
         this.fieldsPerDocument = limit;
         this.firestore = () => admin.firestore();
@@ -25,10 +25,6 @@ class AddToDoc {
         let increaseHeight = height + 1;
         return !limitExceed ? { height: increaseHeight, [fieldID]: fieldData } : { height: 1, [fieldID]: fieldData };
     }
-    async addDocToLocation(docID, fieldID) {
-        let dbPath = this.firestore().doc(`${this.collectionPath}/location`);
-        await dbPath.set({ [fieldID]: docID }, { merge: true });
-    }
     async execute(fieldID, fieldData) {
         try {
             let meta, limit, dbPath, data, saved;
@@ -39,7 +35,6 @@ class AddToDoc {
             data = this.fieldValue({ limit, fieldID, fieldData, height: meta.length });
             await dbPath.set(data, { merge: true });
             saved = await validateSave(dbPath, fieldID);
-            await this.addDocToLocation(saved.id, fieldID);
             return saved;
         }
         catch (error) {

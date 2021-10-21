@@ -1,14 +1,8 @@
+const fieldLocation = require("../helpers/@fieldLocation");
 class GetDocsByID {
     constructor(admin, path) {
         this.collectionPath = path;
         this.firestore = () => admin.firestore();
-    }
-    async findLocation(key) {
-        let query, docs;
-        query = this.firestore().doc(`${this.collectionPath}/location`);
-        docs = await query.get();
-        if (!docs.exists) throw 'key not found in location Document';
-        return docs.data()[key];
     }
     async locationToDocPath(fieldPath, key) {
         let query, docs;
@@ -19,7 +13,7 @@ class GetDocsByID {
     }
     async execute(key) {
         let fieldPath, docData;
-        fieldPath = await this.findLocation(key);
+        fieldPath = await fieldLocation(this.firestore(), this.collectionPath, key);
         docData = await this.locationToDocPath(fieldPath, key);
         return docData;
     }
