@@ -3,6 +3,7 @@ const updateDocs = require('./src/set/update_by_id');
 const deleteDocs = require('./src/set/delete_by_id');
 const getDocsByID = require('./src/get/get_docs_by_id');
 const getAllDocs = require('./src/get/get_all_docs');
+const getLast = require('./src/get/get_last');
 class FirestoreGoose {
     constructor(admin) {
         this.admin = admin;
@@ -21,6 +22,9 @@ class FirestoreGoose {
     }
     getAll({ path }) {
         return new getAllDocs(this.admin, path).execute();
+    }
+    getLast({ path, key }) {
+        return new getLast(this.admin, path).execute(key);
     }
 }
 module.exports = FirestoreGoose;

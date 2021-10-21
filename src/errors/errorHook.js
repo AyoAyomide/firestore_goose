@@ -5,7 +5,7 @@ function errorHook({ error, message, functionName }) {
     if (functionName) errorMessage.functionName = `Error from ${functionName}`;
     if (message) errorMessage.message = `${message}`;
     console.error('Error:', errorMessage);
-    throw message;
+    throw { error, message, functionName };
 }
 
 module.exports = errorHook;
