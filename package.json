@@ -1,6 +1,6 @@
 {
   "name": "firestore_goose",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "ORM library for firestore based on mongoose",
   "main": "index.js",
   "scripts": {

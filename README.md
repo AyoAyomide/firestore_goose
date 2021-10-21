@@ -1,7 +1,7 @@
 # firestore_goose
 
 The firestore_goose is library for working with firestore. it makes it easy to work with firestore.<br>
-it built on top of [firsbase-admin](https://www.npmjs.com/package/firebase-admin)
+it built on top of [firsbase-admin](https://www.npmjs.com/package/firebase-admin). You still need to understand the basics of firestore to use this library it main purpose is to make it easy using firestore
 
 ## Prerequisite
 
@@ -224,7 +224,28 @@ fireSG.getAll(query);
 */
 ```
 
-## Example 8 - Delete : field by id
+---
+
+## Example 8 - Get : last document in the collection
+
+```js
+query = {
+  path: userCollection, //firestore collection
+};
+fireSG.getLast(query);
+/*
+--response--
+{
+  
+  John: {...},
+  Jane: ...
+}
+*/
+```
+
+---
+
+## Example 9 - Delete : field by id
 
 ```js
 userID = "Jane";
@@ -239,7 +260,7 @@ Jane deleted successfully
 */
 ```
 
-## Example 9 - Delete : a value in a nested field
+## Example 10 - Delete : a value in a nested field
 
 ```js
 userID = "John";
