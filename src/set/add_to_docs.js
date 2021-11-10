@@ -2,9 +2,9 @@ const ErrorHook = require('../errors/errorHook');
 const metaData = require('../helpers/@getCollMeta');
 const validateSave = require('./utils/validate_save');
 class AddToDoc {
-    constructor(admin, path, limit = 10) {
+    constructor(admin, path, maxHeight = 10) {
         this.collectionPath = path;
-        this.fieldsPerDocument = limit;
+        this.fieldsPerDocument = maxHeight;
         this.firestore = () => admin.firestore();
     }
     async getMetaData() {
