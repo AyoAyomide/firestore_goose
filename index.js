@@ -13,8 +13,8 @@ class FirestoreGoose {
     constructor(admin) {
         this.admin = admin;
     }
-    add({ path, key, value }) {
-        return new addToDocs(this.admin, path).execute(key, value);
+    add({ path, key, value, maxHeight }) {
+        return new addToDocs(this.admin, path, maxHeight).execute(key, value);
     }
     updateByID({ path, key, childObject, childArrayAdd, childArrayRemove, value }) {
         return new updateDocs(this.admin, path).execute({ key, childObject, childArrayAdd, childArrayRemove, value });
@@ -50,7 +50,7 @@ let data = {
 }
 let sample = Buffer.byteLength(JSON.stringify(data));
 // console.log(bytesToSize(sample));
-// test.add({ path, key, value })
+// test.add({ path, key, value, maxHeight: 1 })
 // test.getLast({ path, key: 'BoX3q' })
     // test.getByID({ path, key: 'B4bsd' })
     // test.getAll({ path })
