@@ -4,8 +4,7 @@
     "description": "ORM library for firestore based on mongoose",
     "main": "index.js",
     "scripts": {
-        "lint": "eslint",
-        "start": "nodemon"
+        "lint": "eslint"
     },
     "devDependencies": {
         "chai": "^4.3.4",
