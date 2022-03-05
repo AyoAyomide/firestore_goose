@@ -25,19 +25,18 @@ class AddToDoc {
         let increaseHeight = height + 1;
         return !limitExceed ? { height: increaseHeight, [fieldID]: fieldData } : { height: 1, [fieldID]: fieldData };
     }
-    async execute(fieldID, fieldData) {
+    async execute(fieldID, fieldData, force) {
         try {
             let meta, limit, dbPath, data, saved;
             meta = await this.getMetaData();
-            this.doesNotExist(meta.keys, fieldID);
+            if (!force) this.doesNotExist(meta.keys, fieldID);
             limit = this.exceedLimit(meta.length);
             dbPath = this.fieldPath(meta.limitExceed, meta.id);
             data = this.fieldValue({ limit, fieldID, fieldData, height: meta.length });
             await dbPath.set(data, { merge: true });
             saved = await validateSave(dbPath, fieldID);
             return saved;
-        }
-        catch (error) {
+        } catch (error) {
             ErrorHook({ error, message: "unable to add new document", functionName: "AddToDocs.execute" })
         }
     }
