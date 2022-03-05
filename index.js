@@ -8,8 +8,8 @@ class FirestoreGoose {
     constructor(admin) {
         this.admin = admin;
     }
-    add({ path, key, value }) {
-        return new addToDocs(this.admin, path).execute(key, value);
+    add({ path, key, value, maxHeight }, { force = false } = {}) {
+        return new addToDocs(this.admin, path, maxHeight).execute(key, value, force);
     }
     updateByID({ path, key, childObject, childArrayAdd, childArrayRemove, value }) {
         return new updateDocs(this.admin, path).execute({ key, childObject, childArrayAdd, childArrayRemove, value });
