@@ -81,6 +81,10 @@ fireSG.add(query2).then((response) => {
 }
 */
 ```
+**NOTE** 
+
+To overwrite a field you use `fireSG.add(query,{force:true})`
+This will overwrite the existing field data
 
 - **id** : The document id
 - **data** : The document data
@@ -101,7 +105,6 @@ query = {
   value: updatedAge, // firestore nested field value
 };
 fireSG.updateByID(query);
-});
 /*
 --response--
 John.age updated successfully
@@ -149,7 +152,6 @@ query = {
   value: childToAdd, // firestore nested field array value
 };
 fireSG.updateByID(query);
-});
 /*
 --response--
 John.kidsNames updated successfully
@@ -172,7 +174,7 @@ query = {
   childArrayRemove: detailsToUpdate, // firestore nested field array Key
   value: childToRemove, // firestore nested field array value
 };
-ireSG.updateByID(query);
+fireSG.updateByID(query);
 /*
 --response--
 John.kidsNames updated successfully
