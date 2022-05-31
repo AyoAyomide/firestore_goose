@@ -227,7 +227,7 @@ fireSG.getByID(query);
 
 ---
 
-## Example 8 - Get : find value in transaction
+## Example 8 - Get : all field in a collection
 
 ```js
 query = {
@@ -250,32 +250,31 @@ fireSG.getByID(query);
 
 ---
 
-## Example 9 - Get : all field in a collection
+## Example 9 Find- value in transaction
 
 ```js
 query = {
   path: userCollection, //firestore collection
-  value: detailsToFind // firestore nested field value
+  value: detailsToFind // string ::
 };
 fireSG.findValueInTransaction(query);
 /*
 --response--
 {
-  
-  John.txId: [ '5t7AyoVQOgOhXap63wtW' ]
+  true
 }
 */
 ```
 
 ---
 
-## Example 9 - Get : all value in transaction
+## Example 10 - Get : all value in transaction
 
 ```js
 query = {
   path: userCollection, //firestore collection
 };
-fireSG.getAll(query);
+fireSG.getAllFromTransaction(query);
 /*
 --response--
 {
