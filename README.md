@@ -91,7 +91,25 @@ This will overwrite the existing field data
 
 ---
 
-## Example 2 - Updating data
+## Example 2 - Adding data using transaction
+
+```js
+let detailsToUpdate = "random data";
+query = {
+  path: userCollection, //firestore collection
+  value: detailsToUpdate // firestore nested field value
+};
+fireSG.addWithTransaction(query);
+/*
+it stores items in an array using firebase transaction
+*/
+```
+
+- **value** : The data we want to add to transaction array
+
+---
+
+## Example 3 - Updating data
 
 **Note:** Only existing document can be updated
 
@@ -118,7 +136,7 @@ John.age = 35
 
 ---
 
-## Example 3 - Update : add to nested object
+## Example 4 - Update : add to nested object
 
 ```js
 detailsToUpdate = "weeklyCars.wednesday";
@@ -140,7 +158,7 @@ John.weeklyCars = { monday: 'ferrari', tuesday: 'benz', wednesday: 'bmw' }
 
 ---
 
-## Example 4 - Update : add new value to array
+## Example 5 - Update : add new value to array
 
 ```js
 detailsToUpdate = "kidsNames";
@@ -163,7 +181,7 @@ John.kidsNames = ['Jam', 'Mike', 'Jerry']
 
 ---
 
-## Example 5 - Update : remove value from array
+## Example 6 - Update : remove value from array
 
 ```js
 detailsToUpdate = "kidsNames";
@@ -186,7 +204,7 @@ John.kidsNames = ['Jam', 'Jerry']
 
 ---
 
-## Example 6 - Get : field by id
+## Example 7 - Get : field by id
 
 ```js
 query = {
@@ -209,7 +227,49 @@ fireSG.getByID(query);
 
 ---
 
-## Example 7 - Get : all field in a collection
+## Example 8 - Get : find value in transaction
+
+```js
+query = {
+  path: userCollection, //firestore collection
+  key: userID, // firestore fieldKey
+};
+fireSG.getByID(query);
+/*
+--response--
+{
+  lastName: 'Doe',
+  weeklyCars: { tuesday: 'benz', monday: 'ferrari' },
+  age: 35,
+  kidsNames: [ 'Jam', 'Jerry' ]
+}
+*/
+```
+
+- **response** : it returns only one field data
+
+---
+
+## Example 9 - Get : all field in a collection
+
+```js
+query = {
+  path: userCollection, //firestore collection
+  value: detailsToFind // firestore nested field value
+};
+fireSG.findValueInTransaction(query);
+/*
+--response--
+{
+  
+  John.txId: [ '5t7AyoVQOgOhXap63wtW' ]
+}
+*/
+```
+
+---
+
+## Example 9 - Get : all value in transaction
 
 ```js
 query = {
@@ -220,15 +280,14 @@ fireSG.getAll(query);
 --response--
 {
   
-  John: {...},
-  Jane: ...
+  John.txId: [...],
 }
 */
 ```
 
 ---
 
-## Example 8 - Get : last document in the collection
+## Example 10 - Get : last document in the collection
 
 ```js
 query = {
@@ -247,7 +306,7 @@ fireSG.getLast(query);
 
 ---
 
-## Example 9 - Delete : field by id
+## Example 11 - Delete : field by id
 
 ```js
 userID = "Jane";
@@ -262,7 +321,7 @@ Jane deleted successfully
 */
 ```
 
-## Example 10 - Delete : a value in a nested field
+## Example 12 - Delete : a value in a nested field
 
 ```js
 userID = "John";
